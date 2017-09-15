@@ -7,7 +7,7 @@
 
   "background" : {
     "persistent" : false,
-    "scripts" : ["eventPage.js"]
+    "scripts" : ["socket.io.js", "eventPage.js"]
   },
 
   "browser_action": {
@@ -20,7 +20,7 @@
   "content_scripts" : [ // Скрипты которые запускаются в контексте странцы
     {
       "matches" : ["*://*/*"],
-      "js" : ["jquery-3.2.1.min.js", "socket.io.js", "chat.js", "connect.js"]
+      "js" : ["jquery-3.2.1.min.js", "chat.js", "connect.js"]
     }
   ],
 

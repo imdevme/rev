@@ -22,14 +22,25 @@ app.get('/list', function (req, res) {
 });
 
 io.on('connection', function (socket) {
+
     console.log('New connection...');
+
     socket.on("disconnect", function(){
         console.log('Disconnect...');
     });
+
     socket.emit('list', {
         quickments : getQuickments()
-    })
+    });
+
+    socket.on('fetch', function (params, callback) {
+        console.log('Fetch...');
+        callback('good');
+    });
+
 });
+
+
 
 function getQuickments() {
     var data = {

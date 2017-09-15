@@ -22,19 +22,3 @@ socket.on('list', function (data) {
 */
 
 //alert('load content script'); // Будет выполнено при рикрытии новой url вкладки
-
-
-function updateComments(data) {
-
-    var message = {
-        type: 'updateComments'
-    };
-
-    chrome.runtime.sendMessage(message, function (res) {
-        console.log('Response:', res);
-    });
-
-};
-
-updateComments({});
-

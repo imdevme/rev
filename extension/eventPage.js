@@ -1,25 +1,27 @@
-alert('load eventPage'); // При активации фоновой страницы, при открытии вкладки chrome://extensions
+// При активации фоновой страницы, при открытии вкладки chrome://extensions
 
-var socket = io.connect('http://localhost:8080');
+var socket;
 
-socket.on('list', function (data) {
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
-    // var $listContainer = $('#quickments .b-list');
-    //
-    // $.each(data, function(){
-    //     console.log('append');
-    //     $listContainer.append('<div class="b-list-item">1</div>');
-    // });
-
-});
-
-chrome.runtime.onMessage.addListener(function(message, sender, handler) {
+    //alert('OnMessage: '+ message.type);
 
     if (!message && !message.type) return;
 
     switch (message.type) {
         case 'updateComments' :
             chrome.browserAction.setPopup({popup: 'text'});
+            break;
+        case 'connect':
+            //openConnection();
+            break;
+        case 'disconnect':
+            //closeConnection();
+            break;
+        case 'fetchComments':
+            getSocket(function (socket) {
+                socket.emit('fetch', {}, fetchHandler);
+            });
             break;
     }
     // if (message && message.type == 'createBugTask') {
@@ -35,17 +37,21 @@ chrome.runtime.onMessage.addListener(function(message, sender, handler) {
     // }
 });
 
+function fetchHandler(data) {
+    fetchSuccess(data);
+}
 
 chrome.runtime.onStartup.addListener(function(){
-    alert('onStartup');
+    console.log('onStartup');
 });
 
 chrome.runtime.onConnect.addListener(function (){
-    alert('onConnect');
+    console.log('onConnect');
 });
 
 chrome.runtime.onSuspend.addListener(function (){
-    alert('onSuspend'); // Отправляется перед выгрузкой eventPage.js
+    console.log('onSuspend');
+    closeConnection();
 });
 
 
@@ -59,3 +65,24 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     // Работает только если нет popup (popup.html)
 });
 
+function fetchSuccess() {
+    chrome.runtime.sendMessage({type: 'fetch_comment_success'});
+}
+
+function getSocket(callback) {
+    if (socket === undefined) {
+        socket = io.connect('http://localhost:8080');
+        socket.on('connect', function (data) {
+            console.log('Connection...');
+            callback(socket);
+        });
+    } else {
+        callback(socket);
+    }
+}
+
+
+function closeConnection() {
+    socket.close();
+    socket = undefined;
+}
