@@ -6,9 +6,8 @@
   "version": "1.0", // Версия расширения
 
   "background" : {
-    "persistent" : false, // если false то chrome.browserAction.onClicked будет undefined
+    "persistent" : false,
     "scripts" : ["eventPage.js"]
-    //"page"
   },
 
   "browser_action": {
@@ -21,7 +20,7 @@
   "content_scripts" : [ // Скрипты которые запускаются в контексте странцы
     {
       "matches" : ["*://*/*"],
-      "js" : ["jquery-3.2.1.min.js", "socket.io.js", "chat.js"]
+      "js" : ["jquery-3.2.1.min.js", "socket.io.js", "chat.js", "connect.js"]
     }
   ],
 

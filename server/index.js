@@ -1,12 +1,17 @@
 var app = require('express')();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var serverHttp = require('http').createServer(app);
+var serverHttps = require('https').createServer(app);
+var io = require('socket.io')(serverHttp);
 
 var port = 8080;
 
-server.listen(port, function () {
+serverHttp.listen(port, function () {
     console.log('start server on port '+port);
 });
+
+// serverHttps.listen(8443, function () {
+//     console.log('start server on port '+8443);
+// });
 
 app.get('/', function (req, res) {
    return res.send('Hello');
@@ -17,6 +22,10 @@ app.get('/list', function (req, res) {
 });
 
 io.on('connection', function (socket) {
+    console.log('New connection...');
+    socket.on("disconnect", function(){
+        console.log('Disconnect...');
+    });
     socket.emit('list', {
         quickments : getQuickments()
     })
