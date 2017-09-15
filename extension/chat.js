@@ -1,6 +1,11 @@
-var socket = io.connect('http://localhost:8080');
+(function ready() {
 
-socket.on('news', function (data) {
-    console.log(data);
-    //socket.emit('my other event', { my: 'data' });
-});
+    var message = {
+        type: 'fetchList'
+    };
+
+    chrome.runtime.sendMessage(message, function (res) {
+        alert('done');
+    });
+
+})();

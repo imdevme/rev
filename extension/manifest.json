@@ -5,28 +5,30 @@
   "description": "description new extension",
   "version": "1.0", // Версия расширения
 
+  "background" : {
+    "persistent" : false, // если false то chrome.browserAction.onClicked будет undefined
+    "scripts" : ["eventPage.js"]
+    //"page"
+  },
+
   "browser_action": {
-    //"default_icon"  : "icon.png",    // Иконка в тулбаре
+    "default_icon"  : "icon.png",    // Иконка в тулбаре
     "default_popup" : "popup.html",  // Окошко открывающееся при нажатии на иконку в тулбаре 
     "default_title" : "New extension!"    // Подсказака при наведении на иконку в тулбаре
   },
 
-  "background" : {
-    "persistent" : false,
-    "scripts" : ["bg.js"]
-    //"page"
-  },
 
   "content_scripts" : [ // Скрипты которые запускаются в контексте странцы
     {
       "matches" : ["*://*/*"],
-      "js" : ["jquery-3.2.1.min.js", "socket.io.js", "chat.js", "bg.js"]
+      "js" : ["jquery-3.2.1.min.js", "socket.io.js", "chat.js"]
     }
   ],
 
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "background"
   ]
 
 }
